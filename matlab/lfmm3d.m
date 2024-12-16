@@ -10,10 +10,10 @@ function [U,varargout] = lfmm3d(eps,srcinfo,pg,varargin)
 %
 %  This subroutine computes the N-body Laplace
 %  interactions and its gradients in three dimensions where 
-%  the interaction kernel is given by $1/r$, namely
+%  the interaction kernel is given by $1/(4\pi r)$, namely
 % 
-%    u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-%      v_{j} \cdot \nabla \left( \frac{1}{\|x-x_{j}\|}\right)   
+%    u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{4\pi\|x-x_{j}\|} - 
+%      v_{j} \cdot \nabla \left( \frac{1}{4\pi\|x-x_{j}\|}\right)   
 %
 %  where $c_{j}$ are the charge densities,
 %  $v_{j}$ are the dipole orientation vectors, and
@@ -179,7 +179,7 @@ function [U,varargout] = lfmm3d(eps,srcinfo,pg,varargin)
 
   ndiv = 400;
   idivflag = 0;
-  mex_id_ = 'lndiv(i double[x], i int[x], i int[x], i int[x], i int[x], i int[x], i int[x], io int[x], io int[x])';
+  mex_id_ = 'lndiv(i double[x], i int64_t[x], i int64_t[x], i int64_t[x], i int64_t[x], i int64_t[x], i int64_t[x], io int64_t[x], io int64_t[x])';
 [ndiv, idivflag] = fmm3d(mex_id_, eps, ns, nt, ifcharge, ifdipole, pg, pgt, ndiv, idivflag, 1, 1, 1, 1, 1, 1, 1, 1, 1);
   if(isfield(opts,'ndiv'))
     ndiv = opts.ndiv;
@@ -195,7 +195,7 @@ function [U,varargout] = lfmm3d(eps,srcinfo,pg,varargin)
   end
   iper = 1;
   timeinfo = zeros(6,1);
-  mex_id_ = 'lfmm3d_ndiv(i int[x], i double[x], i int[x], i double[xx], i int[x], i double[xx], i int[x], i double[xx], i int[x], i int[x], io double[xx], io double[xx], io double[xx], i int[x], i double[xx], i int[x], io double[xx], io double[xx], io double[xx], i int[x], i int[x], i int[x], io double[x], io int[x])';
+  mex_id_ = 'lfmm3d_ndiv(i int64_t[x], i double[x], i int64_t[x], i double[xx], i int64_t[x], i double[xx], i int64_t[x], i double[xx], i int64_t[x], i int64_t[x], io double[xx], io double[xx], io double[xx], i int64_t[x], i double[xx], i int64_t[x], io double[xx], io double[xx], io double[xx], i int64_t[x], i int64_t[x], i int64_t[x], io double[x], io int64_t[x])';
 [pot, grad, hess, pottarg, gradtarg, hesstarg, timeinfo, ier] = fmm3d(mex_id_, nd, eps, ns, sources, ifcharge, charges, ifdipole, dipoles, iper, pg, pot, grad, hess, nt, targ, pgt, pottarg, gradtarg, hesstarg, ndiv, idivflag, ifnear, timeinfo, ier, 1, 1, 1, 3, ns, 1, nd, ns, 1, nd3, ns, 1, 1, nd, ns, nd3, ns, nd6, ns, 1, 3, ntuse, 1, nd, ntuse, nd3, ntuse, nd6, ntuse, 1, 1, 1, 6, 1);
 
   U.pot = [];

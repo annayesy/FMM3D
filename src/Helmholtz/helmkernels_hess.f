@@ -43,7 +43,7 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
 c                        j
 c                 
 c      where q_{j} is the charge strength
@@ -81,7 +81,7 @@ cf2py intent(out) pot
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt)
@@ -91,8 +91,9 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,ztmp
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -107,7 +108,7 @@ c
           d = sqrt(dd)
           if(d.lt.thresh) goto 1000
 
-          ztmp = exp(zkeye*d)/d
+          ztmp = exp(zkeye*d)/d*inv4pi
           do idim=1,nd
             pot(idim,i) = pot(idim,i) + charge(idim,j)*ztmp
           enddo
@@ -132,10 +133,10 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x)=pot(x)+sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x)=pot(x)+sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
 c                        j
 c                 
-c     grad(x)=grad(x)+Gradient(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     grad(x)=grad(x)+Gradient(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
 c                               j
 c      where q_{j} is the charge strength
 c      If |r| < thresh 
@@ -173,7 +174,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt),grad(nd,3,nt)
@@ -183,9 +184,10 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd1,ztmp
       complex *16 ztmp1,ztmp2,ztmp3
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -199,7 +201,7 @@ c
           dd = zdiff(1)**2 + zdiff(2)**2 + zdiff(3)**2
           d = sqrt(dd)
           if(d.lt.thresh) goto 1000
-          cd = exp(zkeye*d)/d
+          cd = exp(zkeye*d)/d*inv4pi
           cd1 = (zkeye*d-1)*cd/dd
           ztmp1 = cd1*zdiff(1)
           ztmp2 = cd1*zdiff(2)
@@ -231,12 +233,12 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
 c                        j
 c                 
-c     grad(x)=grad(x)+Gradient(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     grad(x)=grad(x)+Gradient(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
 c                               j
-c     hess(x)=hess(x)+Hessian(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     hess(x)=hess(x)+Hessian(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
 c                              j
 c      where q_{j} is the charge strength
 c      If |r| < thresh 
@@ -276,7 +278,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt),grad(nd,3,nt)
@@ -287,10 +289,11 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,zkeyed,eye,cd,cd1,cd2,ztmp
       complex *16 ztmp1,ztmp2,ztmp3
       complex *16 htmp1,htmp2,htmp3,htmp4,htmp5,htmp6
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -305,7 +308,7 @@ c
           d = sqrt(dd)
           if(d.lt.thresh) goto 1000
           zkeyed = zkeye*d
-          cd = exp(zkeyed)/d
+          cd = exp(zkeyed)/d*inv4pi
           cd1 = (zkeyed-1)*cd/dd
           cd2 = (zkeyed*zkeyed - 3*(zkeyed-1))*cd/(dd*dd)
           ztmp1 = cd1*zdiff(1)
@@ -350,7 +353,7 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x)=pot(x)+sum   \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j} 
+c     pot(x)=pot(x)+sum  1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j} 
 c                    j
 c
 c                            
@@ -392,7 +395,7 @@ cf2py intent(out) pot
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -403,8 +406,9 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd1,dotprod
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -420,7 +424,7 @@ c
           if(d.lt.thresh) goto 1000
 
           dinv = 1/d
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           cd1 = (1-zkeye*d)*cd/dd
 
           do idim=1,nd
@@ -451,14 +455,14 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x)=pot(x)+sum  d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c     pot(x)=pot(x)+sum 1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                    j
 c
 c   
 c     grad(x)=grad(x)+Gradient( sum  
 c                                j
 c
-c                         \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                         1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                         )
 c                                   
 c      where v_{j} is the dipole orientation vector, 
@@ -500,7 +504,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -511,8 +515,9 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv,dinv2
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd2,cd3,cd4,dotprod
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -529,7 +534,7 @@ c
 
           dinv = 1/d
           dinv2 = dinv**2
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           cd2 = (zkeye*d-1)*cd*dinv2
           cd3 = cd*dinv2*(-zkeye*zkeye-3*dinv2+3*zkeye*dinv)
 
@@ -567,19 +572,19 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x)=pot(x)+sum d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c     pot(x)=pot(x)+sum 1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                    j
 c
 c     grad(x)=grad(x)+Gradient( sum  
 c                                j
 c
-c                        \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                        1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                        )
 c                                   
 c     hess(x)=hess(x)+Hessian( sum  
 c                               j
 c
-c                       \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                       1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                       )
 c                                   
 c      where v_{j} is the dipole orientation vector, 
@@ -623,7 +628,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -635,10 +640,11 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv,dinv2,dx,dy,dz,dinv5
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd2,cd3,cd4,dotprod
       complex *16 cross12,cross13,cross23,zt0,zf1,zf0
       complex *16 cdcommon,cdcommon2,cdcommon3,cdcommon4
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -659,7 +665,7 @@ c
           dinv = 1/d
           dinv2 = dinv**2
           dinv5 = dinv2*dinv2*dinv
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           zf1 = (zkeye*d-1)
           zf0 = zkeye*d
           cd2 = (zkeye*d-1)*cd*dinv2
@@ -724,10 +730,10 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
 c                        j
 c
-c                       \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                       1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
 c      where q_{j} is the charge strength, 
 c      and v_{j} is the dipole orientation vector, 
@@ -768,7 +774,7 @@ c
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -779,8 +785,9 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd1,dotprod
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -796,7 +803,7 @@ c
           if(d.lt.thresh) goto 1000
 
           dinv = 1/d
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           cd1 = (1-zkeye*d)*cd/dd
 
           do idim=1,nd
@@ -830,15 +837,15 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
 c                        j
 c
-c                         \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                         1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
-c     grad(x)=grad(x)+Gradient( sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|+  
+c     grad(x)=grad(x)+Gradient( sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|+  
 c                                j
 c
-c                   d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                   1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                   )
 c                                   
 c      where q_{j} is the charge strength
@@ -881,7 +888,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -892,8 +899,9 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv,dinv2
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd2,cd3,cd4,dotprod
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -910,7 +918,7 @@ c
 
           dinv = 1/d
           dinv2 = dinv**2
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           cd2 = (zkeye*d-1)*cd*dinv2
           cd3 = cd*dinv2*(-zkeye*zkeye-3*dinv2+3*zkeye*dinv)
 
@@ -950,21 +958,21 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
 c                        j
 c
-c                         \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                         1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
-c     grad(x)=grad(x)+Gradient( sumq_{j} e^{i k |x-x_{j}|}/|x-x_{j}|+  
+c     grad(x)=grad(x)+Gradient( sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|+  
 c                                j
 c
-c                   d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                   1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                   )
 c                                   
-c     hess(x)=hess(x)+Hessian( sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     hess(x)=hess(x)+Hessian( sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
 c                               j
 c
-c                   d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                   1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                   )
 c                                   
 c      where q_{j} is the charge strength
@@ -1009,7 +1017,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),dipvec(nd,3,ns)
@@ -1021,12 +1029,13 @@ c
 cc     temporary variables
 c
       real *8 zdiff(3),dd,d,dinv,dinv2,dx,dy,dz,dinv5
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 zkeye,eye,cd,cd1,cd2,cd3,cd4,dotprod
       complex *16 cross12,cross13,cross23,zt0,zf1,zf0
       complex *16 ztmp1,ztmp2,ztmp3
       complex *16 htmp1,htmp2,htmp3,htmp4,htmp5,htmp6
       complex *16 cdcommon,cdcommon2,cdcommon3,cdcommon4
-      integer i,j,idim
+      integer *8 i,j,idim
       data eye/(0.0d0,1.0d0)/
 
       zkeye = zk*eye
@@ -1047,7 +1056,7 @@ c
           dinv = 1/d
           dinv2 = dinv**2
           dinv5 = dinv2*dinv2*dinv
-          cd = exp(zkeye*d)*dinv
+          cd = exp(zkeye*d)*dinv*inv4pi
           cd1 = (zkeye*d-1)*cd/dd
           zf1 = (zkeye*d-1)
           zf0 = zkeye*d

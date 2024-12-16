@@ -38,8 +38,8 @@ c
 c         Using our standard definition, the addition theorem takes 
 c         the simple form 
 c
-c         e^( i k r}/(ikr) = 
-c         \sum_n \sum_m  j_n(k|S|) Y_l^m*(S) h_n(k|T|) Y_l^m(T)
+c         1/(4\pi) e^( i k r}/(ikr) = 
+c         \sum_n \sum_m 1/(4\pi) j_n(k|S|) Y_l^m*(S) h_n(k|T|) Y_l^m(T)
 c
 c
 c-----------------------------------------------------------------------
@@ -127,7 +127,7 @@ c-----------------------------------------------------------------------
 c
 cc      calling sequence variables
 c
-      integer ntarg,nterms,nlege,nd
+      integer *8 ntarg,nterms,nlege,nd
       real *8 rscale,center(3),ztarg(3,ntarg)
       complex *16 zk,pot(nd,ntarg)
       complex *16 mpole(nd,0:nterms,-nterms:nterms)
@@ -136,7 +136,7 @@ c
 c
 cc      temporary variables
 c
-      integer idim
+      integer *8 idim
       complex *16, allocatable :: ephi(:),fhs(:)
       real *8, allocatable :: ynm(:,:)
       real *8 zdiff(3),done
@@ -145,7 +145,7 @@ c
       complex *16 eye
       complex *16 ztmp1,ztmp2,ztmp3,ztmpsum,z
       complex *16 fhder
-      integer itarg,i,m,n,ifder
+      integer *8 itarg,i,m,n,ifder
       data eye/(0.0d0,1.0d0)/
 
       done = 1
@@ -268,7 +268,7 @@ c-----------------------------------------------------------------------
 c
 cc      calling sequence variables
 c
-      integer ntarg,nterms,nlege,nd
+      integer *8 ntarg,nterms,nlege,nd
       real *8 rscale,center(3),ztarg(3,ntarg)
       complex *16 zk,pot(nd,ntarg),grad(nd,3,ntarg)
       complex *16 mpole(nd,0:nterms,-nterms:nterms)
@@ -288,7 +288,7 @@ c
       complex *16 eye
       complex *16 ztmp1,ztmp2,ztmp3,ztmpsum,z
       complex *16 ztmp4,ztmp5,ztmp6
-      integer itarg,i,m,n,ifder,idim
+      integer *8 itarg,i,m,n,ifder,idim
       data eye/(0.0d0,1.0d0)/
 
       done = 1
@@ -441,7 +441,7 @@ c     mpole           : coeffs of the h-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 charge(nd,ns)
@@ -454,18 +454,19 @@ c
       real *8, allocatable :: ynm(:,:)
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16, allocatable :: fjs(:),fjder(:),ephi(:)
       complex *16 ephi1,ephi1inv
       complex *16 z,ztmp,zkeye,eye
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder,idim
+      integer *8 isrc,i,m,n,ifder,idim
 
       ifder=0
       allocate(fjs(0:nterms),fjder(0:nterms),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -514,10 +515,10 @@ c     Recall that there are multiple definitions of scaling for
 c     Ylm. Using our standard definition, 
 c     the addition theorem takes the simple form 
 c
-c        e^( i k r}/r = 
-c         (ik) \sum_n \sum_m  j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
+c       1/(4\pi) e^( i k r}/r = 
+c         (ik) \sum_n \sum_m 1/(4\pi) j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
 c
-c     so contribution is j_n(k|S|) times
+c     so contribution is 1/(4\pi) j_n(k|S|) times
 c   
 c       Ylm*(S)  = P_l,m * dconjg(ephi(m))               for m > 0   
 c       Yl,m*(S)  = P_l,|m| * dconjg(ephi(m))            for m < 0
@@ -582,7 +583,7 @@ c     mpole           : coeffs of the h-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 dipvec(nd,3,ns)
@@ -600,17 +601,18 @@ c
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
       real *8 rx,thetax,phix,ry,thetay,phiy,rz,thetaz,phiz
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 ux,uy,uz,ur,utheta,uphi,zzz
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder,idim
+      integer *8 isrc,i,m,n,ifder,idim
 
       ifder=1
 
       allocate(fjs(0:nterms+1),fjder(0:nterms+1),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms),ynmd(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -693,10 +695,10 @@ c     Recall that there are multiple definitions of scaling for
 c     Ylm. Using our standard definition, 
 c     the addition theorem takes the simple form 
 c
-c        e^( i k r}/r = 
-c         (ik) \sum_n \sum_m  j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
+c       1/(4\pi) e^( i k r}/r = 
+c         (ik) \sum_n \sum_m 1/(4\pi) j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
 c
-c     so contribution is j_n(k|S|) times
+c     so contribution is 1/(4\pi) j_n(k|S|) times
 c   
 c       Ylm*(S)  = P_l,m * dconjg(ephi(m))               for m > 0   
 c       Yl,m*(S)  = P_l,|m| * dconjg(ephi(m))            for m < 0
@@ -795,7 +797,7 @@ c     mpole           : coeffs of the h-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 charge(nd,ns)
@@ -814,17 +816,18 @@ c
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
       real *8 rx,thetax,phix,ry,thetay,phiy,rz,thetaz,phiz
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 ux,uy,uz,ur,utheta,uphi,zzz
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder,idim
+      integer *8 isrc,i,m,n,ifder,idim
 
       ifder=1
 
       allocate(fjs(0:nterms+1),fjder(0:nterms+1),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms),ynmd(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -907,10 +910,10 @@ c     Recall that there are multiple definitions of scaling for
 c     Ylm. Using our standard definition, 
 c     the addition theorem takes the simple form 
 c
-c        e^( i k r}/r = 
-c         (ik) \sum_n \sum_m  j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
+c        1/(4\pi) e^( i k r}/r = 
+c         (ik) \sum_n \sum_m 1/(4\pi) j_n(k|S|) Ylm*(S) h_n(k|T|)Ylm(T)
 c
-c     so contribution is j_n(k|S|) times
+c     so contribution is 1/(4\pi) j_n(k|S|) times
 c   
 c       Ylm*(S)  = P_l,m * dconjg(ephi(m))               for m > 0   
 c       Yl,m*(S)  = P_l,|m| * dconjg(ephi(m))            for m < 0
@@ -1024,7 +1027,7 @@ c-----------------------------------------------------------------------
 c
 cc      calling sequence variables
 c
-      integer ntarg,nterms,nlege,nd
+      integer *8 ntarg,nterms,nlege,nd
       real *8 rscale,center(3),ztarg(3,ntarg)
       complex *16 zk,pot(nd,ntarg)
       complex *16 locexp(nd,0:nterms,-nterms:nterms)
@@ -1041,7 +1044,7 @@ c
       complex *16 eye
       complex *16 ztmp1,ztmp2,ztmp3,ztmpsum,z
       complex *16 fjder
-      integer itarg,i,m,n,ifder,idim
+      integer *8 itarg,i,m,n,ifder,idim
       data eye/(0.0d0,1.0d0)/
 
       done = 1
@@ -1152,7 +1155,7 @@ c-----------------------------------------------------------------------
 c
 cc      calling sequence variables
 c
-      integer ntarg,nterms,nlege,nd
+      integer *8 ntarg,nterms,nlege,nd
       real *8 rscale,center(3),ztarg(3,ntarg)
       complex *16 zk,pot(nd,ntarg),grad(nd,3,ntarg)
       complex *16 locexp(nd,0:nterms,-nterms:nterms)
@@ -1173,7 +1176,7 @@ c
       complex *16 eye
       complex *16 ztmp1,ztmp2,ztmp3,ztmpsum,z
       complex *16 ztmp4,ztmp5,ztmp6
-      integer itarg,i,m,n,ifder,idim
+      integer *8 itarg,i,m,n,ifder,idim
       data eye/(0.0d0,1.0d0)/
 
       done = 1
@@ -1327,7 +1330,7 @@ c     locexp          : coeffs of the j-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 charge(nd,ns)
@@ -1340,18 +1343,19 @@ c
       real *8, allocatable :: ynm(:,:)
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16, allocatable :: fhs(:),fhder(:),ephi(:)
       complex *16 ephi1,ephi1inv
       complex *16 z,ztmp,zkeye,eye
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder,idim
+      integer *8 isrc,i,m,n,ifder,idim
 
       ifder=0
       allocate(fhs(0:nterms),fhder(0:nterms),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -1387,7 +1391,7 @@ c
         call h3dall(nterms,z,rscale,fhs,ifder,fhder)
 c
 c
-c     multiply all hn by charge strength and (i*k).
+c     multiply all hn by charge strength and 1/(4\pi)*(i*k).
 c
         do n = 0,nterms
           fhs(n) = fhs(n)*zkeye
@@ -1452,7 +1456,7 @@ c     locexp          : coeffs of the h-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 dipvec(nd,3,ns)
@@ -1469,18 +1473,19 @@ c
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
       real *8 rx,thetax,phix,ry,thetay,phiy,rz,thetaz,phiz
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 ux,uy,uz,ur,utheta,uphi,zzz
-      integer idim
+      integer *8 idim
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder
+      integer *8 isrc,i,m,n,ifder
 
       ifder=1
 
       allocate(fhs(0:nterms),fhder(0:nterms),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms),ynmd(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -1538,7 +1543,7 @@ c
         call h3dall(nterms,z,rscale,fhs,ifder,fhder)
 c
 c
-c     multiply all hn by  (i*k).
+c     multiply all hn by 1/(4\pi) (i*k).
 c
         do n = 0,nterms
           fhs(n) = fhs(n)*zkeye
@@ -1552,10 +1557,10 @@ c     Recall that there are multiple definitions of scaling for
 c     Ylm. Using our standard definition, 
 c     the addition theorem takes the simple form 
 c
-c        e^( i k r}/r = 
-c         (ik) \sum_n \sum_m  j_n(k|T|) Ylm*(T) h_n(k|S|)Ylm(S)
+c        1/(4\pi) e^( i k r}/r = 
+c         (ik) \sum_n \sum_m 1/(4\pi) j_n(k|T|) Ylm*(T) h_n(k|S|)Ylm(S)
 c
-c     so contribution is j_n(k|S|) times
+c     so contribution is 1/(4\pi) j_n(k|S|) times
 c   
 c       Ylm*(S)  = P_l,m * dconjg(ephi(m))               for m > 0   
 c       Yl,m*(S)  = P_l,|m| * dconjg(ephi(m))            for m < 0
@@ -1650,7 +1655,7 @@ c     locexp          : coeffs of the h-expansion
 c
 c-----------------------------------------------------------------------
       implicit none
-      integer ns,nterms,nlege,nd
+      integer *8 ns,nterms,nlege,nd
       complex *16 zk
       real *8 rscale,sources(3,ns),center(3),wlege(*)
       complex *16 charge(nd,ns)
@@ -1668,18 +1673,19 @@ c
       real *8 r,theta,phi
       real *8 ctheta,stheta,cphi,sphi
       real *8 rx,thetax,phix,ry,thetay,phiy,rz,thetaz,phiz
+      real *8, parameter :: inv4pi = 7.957747154594766788444188168626d-2
       complex *16 ux,uy,uz,ur,utheta,uphi,zzz
-      integer idim
+      integer *8 idim
       data eye/(0.0d0,1.0d0)/
 
-      integer isrc,i,m,n,ifder
+      integer *8 isrc,i,m,n,ifder
 
       ifder=1
 
       allocate(fhs(0:nterms),fhder(0:nterms),ephi(-nterms:nterms))
       allocate(ynm(0:nterms,0:nterms),ynmd(0:nterms,0:nterms))
 
-      zkeye = eye*zk
+      zkeye = eye*zk*inv4pi
 
 
       do isrc=1,ns
@@ -1737,7 +1743,7 @@ c
         call h3dall(nterms,z,rscale,fhs,ifder,fhder)
 c
 c
-c     multiply all hn by  (i*k).
+c     multiply all hn by 1/(4\pi) (i*k).
 c
         do n = 0,nterms
           fhs(n) = fhs(n)*zkeye
@@ -1751,10 +1757,10 @@ c     Recall that there are multiple definitions of scaling for
 c     Ylm. Using our standard definition, 
 c     the addition theorem takes the simple form 
 c
-c        e^( i k r}/r = 
-c         (ik) \sum_n \sum_m  j_n(k|T|) Ylm*(T) h_n(k|S|)Ylm(S)
+c        1/(4\pi) e^( i k r}/r = 
+c         (ik) \sum_n \sum_m 1/(4\pi) j_n(k|T|) Ylm*(T) h_n(k|S|)Ylm(S)
 c
-c     so contribution is j_n(k|S|) times
+c     so contribution is 1/(4\pi) j_n(k|S|) times
 c   
 c       Ylm*(S)  = P_l,m * dconjg(ephi(m))               for m > 0   
 c       Yl,m*(S)  = P_l,|m| * dconjg(ephi(m))            for m < 0

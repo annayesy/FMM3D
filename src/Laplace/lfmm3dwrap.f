@@ -3,7 +3,7 @@ c
 c  The laplace FMM evaluates the following potential
 c  and its gradient
 c    
-c     u(x) = \sum_{j=1}^{N} c_{j}/|x-x_{j}| - v_{j}.\nabla (1/|x-x_{j}|)
+c     u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j}/|x-x_{j}| - 1/(4\pi) v_{j}.\nabla (1/|x-x_{j}|)
 c
 c  Here x_{j} are the source locations, c_{j} are the charge strengths,
 c  v_{j} are the dipole strengths. We refer to the collection of 
@@ -179,7 +179,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source locations $x=x_{j}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -189,7 +189,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -201,7 +201,7 @@ c  Output arguments:
 c
 c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -211,8 +211,8 @@ c
 c--------------------------------
 c
       double precision eps
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -259,7 +259,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source locations $x=x_{j}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -269,7 +269,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -283,7 +283,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double precision(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -294,8 +294,8 @@ c--------------------------------
 c
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -343,7 +343,7 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient,
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source locations $x=x_{j}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -353,7 +353,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -371,7 +371,7 @@ c    -    hess: double precision(6,nsource)
 c          Hessian at source locations, $\nabla^2 u(x_{j})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -381,8 +381,8 @@ c--------------------------------
 c
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -427,7 +427,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -438,7 +438,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -450,7 +450,7 @@ c  Output arguments:
 c
 c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -462,8 +462,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(1)
@@ -508,7 +508,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -519,7 +519,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -533,7 +533,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double precision(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -545,8 +545,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(1)
@@ -591,7 +591,7 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient, 
 c  and its hessian
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -602,7 +602,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -620,7 +620,7 @@ c    -    hess: double precision(6,nsource)
 c          Hessian at source locations, $\nabla^2 u(x_{j})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -633,8 +633,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(1)
@@ -676,8 +676,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -688,7 +688,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -702,7 +702,7 @@ c  Output arguments:
 c
 c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -714,8 +714,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -763,8 +763,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -775,7 +775,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -791,7 +791,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double precision(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -803,8 +803,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -849,8 +849,8 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient 
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -861,7 +861,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -881,7 +881,7 @@ c    -    hess: double precision(6,nsource)
 c          Hessian at source locations, $\nabla^2 u(x_{j})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -891,8 +891,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double precision charge(nsource)
@@ -933,7 +933,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the target locations $x=t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -943,13 +943,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -959,7 +959,7 @@ c  Output arguments:
 c
 c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -971,8 +971,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1016,7 +1016,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the target locations $x=t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1026,13 +1026,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1044,7 +1044,7 @@ c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1056,8 +1056,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1101,7 +1101,7 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient,
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the target locations $x=t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1111,13 +1111,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1133,7 +1133,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1143,8 +1143,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1184,7 +1184,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1195,13 +1195,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1211,7 +1211,7 @@ c  Output arguments:
 c
 c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1223,8 +1223,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -1268,7 +1268,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1279,13 +1279,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1297,7 +1297,7 @@ c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1309,8 +1309,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -1354,7 +1354,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1365,13 +1365,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1387,7 +1387,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1397,8 +1397,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -1441,8 +1441,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1453,7 +1453,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1461,7 +1461,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1471,7 +1471,7 @@ c  Output arguments:
 c
 c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1483,8 +1483,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1528,8 +1528,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1540,7 +1540,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1548,7 +1548,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1560,7 +1560,7 @@ c    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1572,8 +1572,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1617,8 +1617,8 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient 
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1629,7 +1629,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1637,7 +1637,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1653,7 +1653,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1663,8 +1663,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1706,7 +1706,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1716,13 +1716,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1734,7 +1734,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1746,8 +1746,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1792,7 +1792,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1802,13 +1802,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1824,7 +1824,7 @@ cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1836,8 +1836,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1882,7 +1882,7 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient,
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|}
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1892,13 +1892,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1922,7 +1922,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1932,8 +1932,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -1977,7 +1977,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -1988,13 +1988,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2006,7 +2006,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2018,8 +2018,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -2064,7 +2064,7 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -2075,13 +2075,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2097,7 +2097,7 @@ cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2109,8 +2109,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -2156,7 +2156,7 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient,
 c  and its hessian
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -2167,13 +2167,13 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2196,7 +2196,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2206,8 +2206,8 @@ c
       implicit none
       double precision eps
       
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(1)
@@ -2246,8 +2246,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -2258,7 +2258,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -2266,7 +2266,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2278,7 +2278,7 @@ c    -    pot: double precision(nsource)
 c          Potential at source locations, $u(x_{j})$
 cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2290,8 +2290,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -2335,8 +2335,8 @@ cf2py  intent(out) ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -2347,7 +2347,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -2355,7 +2355,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2371,7 +2371,7 @@ cc    -    pottarg: double precision(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double precision(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2383,8 +2383,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)
@@ -2429,8 +2429,8 @@ c-------------------------------------
 c
 c  This subroutine evaluates the potential, its gradient,
 c  and its hessian
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{1}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{1}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{1}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -2441,7 +2441,7 @@ c  Input arguments:
 c
 c    -    eps: double precision
 c          precision requested
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -2449,7 +2449,7 @@ c    -    charge: double precision(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double precision(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -2472,7 +2472,7 @@ c    -    hesstarg: double precision(6,ntarg)
 c          Hessian at target locations, $\nabla^2 u(t_{i})$
 c          Hessian is ordered as
 c          $u_{xx},u_{yy},u_{zz},u_{xy},u_{xz},u_{yz}$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -2482,8 +2482,8 @@ c
       implicit none
       double precision eps
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double precision charge(nsource)

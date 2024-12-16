@@ -32,8 +32,8 @@ c
 c              
 c       Laplace FMM in R^3: evaluate all pairwise particle
 c       interactions (ignoring self-interaction). 
-c       We use (1/r) for the Green's function, without the 
-c       (1/4 pi) scaling. Self-interactions are not included.
+c       We use 1/(4\pi)*(1/r) for the Green's function.
+c       Self-interactions are not included.
 c   
 c       The main FMM routine permits both evaluation at sources
 c       and at a collection of targets. 
@@ -44,6 +44,8 @@ c
 c       See below for explanation of calling sequence arguments.
 c  
 c
+        integer *8 ier,iprec,nsource,ifcharge,ifdipole,ifpot,iffld,ntarg
+        integer *8 ifpottarg,iffldtarg
         dimension source(3,1)
         complex *16 charge(1)
         complex *16 dipstr(1)
@@ -83,8 +85,8 @@ c
 c              
 c       Laplace FMM in R^3: evaluate all pairwise particle
 c       interactions (ignoring self-interaction). 
-c       We use (1/r) for the Green's function, without the 
-c       (1/4 pi) scaling. Self-interactions are not included.
+c       We use 1/(4\pi)*(1/r) for the Green's function.
+c       Self-interactions are not included.
 c   
 c       The main FMM routine permits both evaluation at sources
 c       and at a collection of targets. 
@@ -95,6 +97,8 @@ c
 c       See below for explanation of calling sequence arguments.
 c  
 c
+        integer *8 ier,iprec,nsource,ifcharge,ifdipole,ifpot,iffld,ntarg
+        integer *8 ifpottarg,iffldtarg
         dimension source(3,1)
         complex *16 charge(1)
         complex *16 dipstr(1)
@@ -137,8 +141,8 @@ c       Laplace FMM in R^3: evaluate all pairwise particle
 c       interactions (ignoring self-interaction) 
 c       and interactions with targets.
 c
-c       We use (1/r) for the Green's function,
-c       without the (1/4 pi) scaling.  Self-interactions are not included.
+c       We use 1/(4\pi)*(1/r) for the Green's function.
+c       Self-interactions are not included.
 c   
 c       This is primarily a memory management code. 
 c       The actual work is carried out in subroutine lfmm3dparttargmain.
@@ -156,7 +160,7 @@ c                  3 => tolerance =.5d-9
 c                  4 => tolerance =.5d-12
 c                  5 => tolerance =.5d-15
 c
-c       nsource: integer:  number of sources
+c       nsource: integer *8:  number of sources
 c       source: real *8 (3,nsource):  source locations
 c       ifcharge:  charge computation flag
 c                  ifcharge = 1   =>  include charge contribution
@@ -170,7 +174,7 @@ c       dipvec: real *8 (3,nsource): dipole orientation vectors.
 c
 c       ifpot:  potential flag (1=compute potential, otherwise no)
 c       iffld:  field flag (1=compute field, otherwise no)
-c       ntarget: integer:  number of targets
+c       ntarget: integer *8:  number of targets
 c       target: real *8 (3,ntarget):  target locations
 c       ifpottarg:  target potential flag 
 c                   (1=compute potential, otherwise no)
@@ -186,19 +190,19 @@ c       fld: complex *16 (3,nsource): field (-gradient) at source locations
 c       pottarg: complex *16 (ntarget): potential at target locations 
 c       fldtarg: complex *16 (3,ntarget): field (-gradient) at target locations 
 c
-      integer ier,iprec,nsource
-      integer ifcharge,ifdipole,iper
+      integer *8 ier,iprec,nsource
+      integer *8 ifcharge,ifdipole,iper
       double precision source(3,nsource)
       
       double complex charge(*),dipstr(*)
       double precision dipvec(3,*)
 
-      integer ifpot,iffld,ifpottarg,iffldtarg
+      integer *8 ifpot,iffld,ifpottarg,iffldtarg
       double complex  pot(*),fld(3,*)
       double complex  pottarg(*),fldtarg(3,*)
 
-      integer nd,ifpgh,ifpghtarg
-      integer ntarg
+      integer *8 nd,ifpgh,ifpghtarg
+      integer *8 ntarg
       double precision targ(3,*)
       double complex, allocatable :: dipvec_in(:,:)
       
@@ -208,7 +212,7 @@ c
       double complex hess(6),hesstarg(6)
       double precision eps
 
-      integer i
+      integer *8 i
      
 c     set fmm tolerance based on iprec flag.
 c
@@ -344,12 +348,12 @@ c       Laplace interactions in R^3: evaluate all pairwise particle
 c       interactions (ignoring self-interaction) 
 c       and interactions with targets via direct O(N^2) algorithm.
 c
-c       We use (1/r) for the Green's function,
-c       without the (1/4 pi) scaling.  Self-interactions are not-included.
+c       We use 1/(4\pi)*(1/r) for the Green's function.
+c       Self-interactions are not-included.
 c   
 c       INPUT PARAMETERS:
 c
-c       nsource: integer:  number of sources
+c       nsource: integer *8:  number of sources
 c       source: real *8 (3,nsource):  source locations
 c       ifcharge:  charge computation flag
 c                  ifcharge = 1   =>  include charge contribution
@@ -363,7 +367,7 @@ c       dipvec: real *8 (3,nsource): dipole orientation vectors.
 c
 c       ifpot:  potential flag (1=compute potential, otherwise no)
 c       iffld:  field flag (1=compute field, otherwise no)
-c       ntarg: integer:  number of targets
+c       ntarg: integer *8:  number of targets
 c       targ: real *8 (3,ntarg):  target locations
 c       ifpottarg:  target potential flag 
 c                   (1=compute potential, otherwise no)
@@ -377,9 +381,9 @@ c       fld: complex *16 (3,nsource): field (-gradient) at source locations
 c       pottarg: complex *16 (ntarg): potential at target locations 
 c       fldtarg: complex *16 (3,ntarg): field (-gradient) at target locations 
 c
-      integer nsource,ifcharge,ifdipole,ifpot,iffld,ntarg
-      integer ifpottarg,iffldtarg
-      integer nt,ns
+      integer *8 nsource,ifcharge,ifdipole,ifpot,iffld,ntarg
+      integer *8 ifpottarg,iffldtarg
+      integer *8 nt,ns,ione
       double precision source(3,*), targ(3,*)
       double complex charge(*),dipstr(*)
       double precision, allocatable :: charge_in(:,:)
@@ -393,8 +397,8 @@ c
       double precision, allocatable :: dipvec_in(:,:,:)
       double precision thresh
 
-      integer i,j,nd
-      integer ifpgh,ifpghtarg
+      integer *8 i,j,nd
+      integer *8 ifpgh,ifpghtarg
 
       double precision xmin,xmax,ymin,ymax,zmin,zmax
       double precision bsize,btmp,sizex,sizey,sizez
@@ -402,11 +406,12 @@ c
       double complex ima
       data ima/(0.0d0,1.0d0)/
 
-      integer ntmp
+      integer *8 ntmp
 
       nt = ntarg
       ns = nsource
 
+      ione = 1
       ifpgh = 0
       ifpghtarg = 0
 
@@ -427,7 +432,7 @@ c
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
         do i=1,ns
           charge_in(1,i) = real(charge(i))
-          charge_in(2,i) = imag(charge(i))
+          charge_in(2,i) = dimag(charge(i))
         enddo
 C$OMP END PARALLEL DO
         if(ifdipole.ne.1) allocate(dipvec_in(2,3,1))
@@ -439,11 +444,11 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
         do i=1,ns
           dipvec_in(1,1,i) = real(dipstr(i))*dipvec(1,i)
-          dipvec_in(2,1,i) = imag(dipstr(i))*dipvec(1,i)
+          dipvec_in(2,1,i) = dimag(dipstr(i))*dipvec(1,i)
           dipvec_in(1,2,i) = real(dipstr(i))*dipvec(2,i)
-          dipvec_in(2,2,i) = imag(dipstr(i))*dipvec(2,i)
+          dipvec_in(2,2,i) = dimag(dipstr(i))*dipvec(2,i)
           dipvec_in(1,3,i) = real(dipstr(i))*dipvec(3,i)
-          dipvec_in(2,3,i) = imag(dipstr(i))*dipvec(3,i)
+          dipvec_in(2,3,i) = dimag(dipstr(i))*dipvec(3,i)
         enddo
 C$OMP END PARALLEL DO
         if(ifcharge.ne.1) allocate(charge_in(2,1))
@@ -554,7 +559,7 @@ c
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectcp(nd,source,charge_in,ns,
-     1            source(1,i),1,pottmp(1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -563,7 +568,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectcg(nd,source,charge_in,ns,
-     1            source(1,i),1,pottmp(1,i),gradtmp(1,1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),gradtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -573,7 +578,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,nt
             call l3ddirectcp(nd,source,charge_in,ns,
-     1            targ(1,i),1,pottargtmp(1,i),thresh)
+     1            targ(1,i),ione,pottargtmp(1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -582,7 +587,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,nt
             call l3ddirectcg(nd,source,charge_in,ns,
-     1            targ(1,i),1,pottargtmp(1,i),
+     1            targ(1,i),ione,pottargtmp(1,i),
      2            gradtargtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
@@ -595,7 +600,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectdp(nd,source,dipvec_in,ns,
-     1            source(1,i),1,pottmp(1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -604,7 +609,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectdg(nd,source,dipvec_in,ns,
-     1            source(1,i),1,pottmp(1,i),gradtmp(1,1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),gradtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -614,7 +619,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,nt
             call l3ddirectdp(nd,source,dipvec_in,ns,
-     1            targ(1,i),1,pottargtmp(1,i),thresh)
+     1            targ(1,i),ione,pottargtmp(1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -623,7 +628,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,nt
             call l3ddirectdg(nd,source,dipvec_in,ns,
-     1            targ(1,i),1,pottargtmp(1,i),
+     1            targ(1,i),ione,pottargtmp(1,i),
      2            gradtargtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
@@ -637,7 +642,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectcdp(nd,source,charge_in,dipvec_in,ns,
-     1            source(1,i),1,pottmp(1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -646,7 +651,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,ns
             call l3ddirectcdg(nd,source,charge_in,dipvec_in,ns,
-     1            source(1,i),1,pottmp(1,i),gradtmp(1,1,i),thresh)
+     1            source(1,i),ione,pottmp(1,i),gradtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO
         endif
@@ -666,7 +671,7 @@ C$OMP END PARALLEL DO
 C$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(i)
           do i=1,nt
             call l3ddirectcdg(nd,source,charge_in,dipvec_in,ns,
-     1            targ(1,i),1,pottargtmp(1,i),
+     1            targ(1,i),ione,pottargtmp(1,i),
      2            gradtargtmp(1,1,i),thresh)
           enddo
 C$OMP END PARALLEL DO

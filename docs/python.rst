@@ -19,11 +19,11 @@ Laplace wrappers
 
 This subroutine computes the N-body Laplace
 interactions and its gradients in three dimensions where 
-the interaction kernel is given by $1/r$
+the interaction kernel is given by $\frac{1}/{4\pi r}$
  
 .. math::
 
-    u(x) = \sum_{j=1}^{N} \frac{c_{j}}{\|x-x_{j}\|} - v_{j} \cdot \nabla \left( \frac{1}{\|x-x_{j}\|}\right)   
+    u(x) = \sum_{j=1}^{N} \frac{c_{j}}{4\pi\|x-x_{j}\|} - v_{j} \cdot \nabla \left( \frac{1}{4\pi\|x-x_{j}\|}\right)   
 
 where $c_{j}$ are the charge densities
 $v_{j}$ are the dipole orientation vectors, and
@@ -99,11 +99,11 @@ Helmholtz wrappers
 
 This subroutine computes the N-body Helmholtz
 interactions and its gradients in three dimensions where 
-the interaction kernel is given by $e^{ikr}/r$
+the interaction kernel is given by $\frac{e^{ikr}}{4\pi r}$
  
 .. math::
 
-    u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|} - v_{j} \cdot \nabla \left( \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)   
+    u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x-x_{j}\|}}{4\pi\|x-x_{j}\|} - v_{j} \cdot \nabla \left( \frac{e^{ik\|x-x_{j}\|}}{4\pi\|x-x_{j}\|}\right)   
 
 where $c_{j}$ are the charge densities
 $v_{j}$ are the dipole orientation vectors, and
@@ -184,7 +184,7 @@ denote the Stokeslet given by
 
 
 .. math::
-   \mathcal{G}^{\textrm{stok}}(x,y)=\frac{1}{2 \|x-y\|^3}
+   \mathcal{G}^{\textrm{stok}}(x,y)=\frac{1}{8\pi \|x-y\|^3}
    \begin{bmatrix}
    (x_{1}-y_{1})^2 + \|x-y \|^2 & (x_{1}-y_{1})(x_{2}-y_{2}) &
    (x_{1}-y_{1})(x_{3}-y_{3}) \\ 
@@ -194,12 +194,12 @@ denote the Stokeslet given by
    (x_{3}-y_{3})^2 + \|x-y \|^2 
    \end{bmatrix} \, ,
 
-and $\mathcal{T}^{\textrm{stok}}(x,y)$ denote the Stresslet whose action on
+let $\mathcal{T}^{\textrm{stok}}(x,y)$ denote the Stresslet whose action on
 a vector $v$ is given by
 
 .. math::
    v\cdot \mathcal{T}^{\textrm{stok}}(x,y)  = 
-   \frac{3 v \cdot (x-y)}{\|x-y \|^5}
+   \frac{3 v \cdot (x-y)}{4\pi\|x-y \|^5}
    \begin{bmatrix}
    (x_{1}-y_{1})^2 & (x_{1}-y_{1})(x_{2}-y_{2}) &
    (x_{1}-y_{1})(x_{3}-y_{3}) \\ 
@@ -207,26 +207,67 @@ a vector $v$ is given by
    (x_{2}-y_{2})(x_{3}-y_{3}) \\ 
    (x_{3}-y_{3})(x_{1}-y_{1})  & (x_{3}-y_{3})(x_{2}-y_{2}) & 
    (x_{3}-y_{3})^2  
-   \end{bmatrix} \, .
+   \end{bmatrix} \, ,
+
+let $\mathcal{R}^{\textrm{stok}}(x,y)$ denote the Rotlet whose action on
+a vector $v$ is given by
+
+.. math::
+   v\cdot \mathcal{R}^{\textrm{stok}}(x,y)  = 
+   \frac{v \cdot (x-y)}{4\pi\|x-y \|^3}
+   \begin{bmatrix}
+   1 & 0 & 0 \\ 
+   0 & 1 & 0 \\ 
+   0 & 0 & 1  
+   \end{bmatrix} \, ,
+
+and $\mathcal{D}^{\textrm{stok}}(x,y)$ denote the symmetric part of Doublet whose action on
+a vector $v$ is given by
+
+.. math::
+   v\cdot \mathcal{D}^{\textrm{stok}}(x,y)  = 
+   \frac{3 v \cdot (x-y)}{4\pi\|x-y \|^5}
+   \begin{bmatrix}
+   (x_{1}-y_{1})^2 & (x_{1}-y_{1})(x_{2}-y_{2}) &
+   (x_{1}-y_{1})(x_{3}-y_{3}) \\ 
+   (x_{2}-y_{2})(x_{1}-y_{1}) & (x_{2}-y_{2})^2 & 
+   (x_{2}-y_{2})(x_{3}-y_{3}) \\ 
+   (x_{3}-y_{3})(x_{1}-y_{1})  & (x_{3}-y_{3})(x_{2}-y_{2}) & 
+   (x_{3}-y_{3})^2  
+   \end{bmatrix} - \\
+   \frac{1}{4\pi\|x-y \|^3}
+   \begin{bmatrix}
+   v_1(x_{1}-y_{1}) & v_2(x_{1}-y_{1}) & v_3(x_{1}-y_{1}) \\
+   v_2(x_{2}-y_{2}) & v_2(x_{2}-y_{2}) & v_3(x_{2}-y_{2}) \\
+   v_3(x_{3}-y_{3}) & v_3(x_{3}-y_{3}) & v_3(x_{3}-y_{3})
+   \end{bmatrix} \, . 
 
 This subroutine computes the N-body Stokes
 interactions, its gradients and the corresponding pressure 
 in three dimensions given by 
- 
+
+
 .. math::
 
-    u(x) = \sum_{m=1}^{N} \mathcal{G}^{\textrm{stok}}(x,x_{j}) \sigma_{j}  + \nu_{j} \cdot \mathcal{T}^{\textrm{stok}}(x,x_{j}) \cdot \mu_{j}   
+    u(x) = \sum_{m=1}^{N} \mathcal{G}^{\textrm{stok}}(x,x_{j}) \sigma_{j}  + \nu_{j} \cdot \mathcal{T}^{\textrm{stok}}(x,x_{j}) \cdot \mu_{j} +
+                          \nu^{r}_{j} \cdot \mathcal{R}^{\textrm{stok}}(x,x_{j}) \cdot \mu^{r}_{j} - \mu^{r}_{j} \cdot \mathcal{R}^{\textrm{stok}}(x,x_{j}) \cdot \nu^{r}_{j} + \\
+                          \nu^{d}_{j} \cdot \mathcal{R}^{\textrm{stok}}(x,x_{j}) \cdot \mu^{d}_{j} - \mu^{d}_{j} \cdot \mathcal{R}^{\textrm{stok}}(x,x_{j}) \cdot \nu^{d}_{j} +
+                          \nu^{d}_{j} \cdot \mathcal{D}^{\textrm{stok}}(x,x_{j}) \cdot \mu^{d}_{j} \, .
 
 where $\sigma_{j}$ are the Stokeslet densities,
 $\nu_{j}$ are the stresslet orientation vectors, $\mu_{j}$ 
-are the stresslet densities, and
+are the stresslet densities,
+$\nu^{r}_{j}$ are the rotlet orientation vectors, $\mu^{r}_{j}$ 
+are the rotlet densities,
+$\nu^{d}_{j}$ are the doublet orientation vectors, $\mu^{d}_{j}$ 
+are the doublet densities, and
 $x_{j}$ are the source locations.
 When $x=x_{j}$, the term corresponding to $x_{j}$ is dropped
 from the sum.
 
 .. code:: python
    
-   def stfmm3d(*,eps,sources,stoklet=None,strslet=None,strsvec=None,targets=None,ifppreg=0,ifppregtarg=0,nd=1)
+   def stfmm3d(*,eps,sources,stoklet=None,strslet=None,strsvec=None,rotlet=None,rotvec=None,doublet=None,doubvec=None,targets=None,ifppreg=0,ifppregtarg=0,nd=1)
 
 Wrapper for fast multipole implementation for Stokes N-body
 interactions.
@@ -243,6 +284,14 @@ Args:
       stresslet strengths ($\mu_{j}$ above)
 -  strsvec: float(nd,3,n) or float(3,n)
       stresslet orientations ($\nu_{j}$ above)
+-  rotlet: float(nd,3,n) or float(3,n)
+      rotlet strengths ($\mu^{r}_{j}$ above)
+-  rotvec: float(nd,3,n) or float(3,n)
+      rotlet orientations ($\nu^{r}_{j}$ above)
+-  doublet: float(nd,3,n) or float(3,n)
+      doublet strengths ($\mu^{d}_{j}$ above)
+-  doubvec: float(nd,3,n) or float(3,n)
+      doublet orientations ($\nu^{d}_{j}$ above)
 -  targets: float(3,nt)
       target locations (x)
 -  ifppreg: integer
@@ -273,7 +322,7 @@ target locations.
               
 .. code:: python
    
-   def st3ddir(*,eps,sources,stoklet=None,strslet=None,strsvec=None,targets=None,ifppreg=0,ifppregtarg=0,nd=1,thresh=1e-16):
+   def st3ddir(*,eps,sources,stoklet=None,strslet=None,strsvec=None,rotlet=None,rotvec=None,doublet=None,doubvec=None,targets=None,ifppreg=0,ifppregtarg=0,nd=1,thresh=1e-16):
 
 ------------------------------------------------------------------
 
@@ -299,7 +348,7 @@ given by
  
 .. math::
 
-    E(x) = \sum_{j=1}^{N} \nabla \times \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|} M_{j} + \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|} J_{j} +  \nabla \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|} \rho_{j}       
+    E(x) = \sum_{j=1}^{N} \nabla \times \frac{e^{ik\|x-x_{j}\|}}{4\pi\|x-x_{j}\|} M_{j} + \frac{e^{ik\|x-x_{j}\|}}{4\pi\|x-x_{j}\|} J_{j} +  \nabla \frac{e^{ik\|x-x_{j}\|}}{4\pi\|x-x_{j}\|} \rho_{j}       
 
 where $M_{j}$ are the magnetic current densities,
 $J_{j}$ are the electric current densities, 

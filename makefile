@@ -1,4 +1,4 @@
-# Makefile for FMM3D
+
 # # This is the only makefile; there are no makefiles in subdirectories.
 # Users should not need to edit this makefile (doing so would make it
 # hard to stay up to date with repo version). Rather in order to
@@ -14,8 +14,9 @@ FC=gfortran
 
 
 # set compiler flags for c and fortran
-FFLAGS= -fPIC -O3 -march=native -funroll-loops -std=legacy
-CFLAGS= -fPIC -O3 -march=native -funroll-loops -std=c99
+FFLAGS= -fPIC -O3 -march=native -funroll-loops -std=legacy -w
+FFLAGS_DYN= -shared -fPIC
+CFLAGS= -fPIC -O3 -march=native -funroll-loops -std=gnu17
 CXXFLAGS= -std=c++11 -DSCTL_PROFILE=-1 -fPIC -O3 -march=native -funroll-loops
 
 # set linking libraries
@@ -31,8 +32,8 @@ PYTHON=python
 
 
 # flags for MATLAB MEX compilation..
-MFLAGS=-compatibleArrayDims -DMWF77_UNDERSCORE1
-MWFLAGS=-c99complex
+MFLAGS=-compatibleArrayDims -DMWF77_UNDERSCORE1 "CFLAGS=$(CFLAGS)"
+MWFLAGS=-c99complex -i8
 MOMPFLAGS = -D_OPENMP
 
 # location of MATLAB's mex compiler
@@ -86,6 +87,7 @@ endif
 # vectorized kernel directory
 SRCDIR = ./vec-kernels/src
 INCDIR = ./vec-kernels/include
+FINCDIR = ./src/Helmholtz
 LIBDIR = lib-static
 
 # objects to compile
@@ -192,10 +194,10 @@ usage:
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 %.o: %.c %.h
 	$(CC) -c $(CFLAGS) $< -o $@
-%.o: %.f %.h
-	$(FC) -c $(FFLAGS) $< -o $@
+%.o: %.f 
+	$(FC) -c $(FFLAGS) -I$(FINCDIR) $< -o $@
 %.o: %.f90
-	$(FC) -c $(FFLAGS) $< -o $@
+	$(FC) -c $(FFLAGS) -I$(FINCDIR) $< -o $@
 
 # build the library...
 lib: $(STATICLIB) $(DYNAMICLIB)
@@ -211,7 +213,7 @@ install: $(STATICLIB) $(DYNAMICLIB)
 	mkdir -p $(FMM_INSTALL_DIR)
 	cp -f lib/$(DYNAMICLIB) $(FMM_INSTALL_DIR)/
 	cp -f lib-static/$(STATICLIB) $(FMM_INSTALL_DIR)/
-	[ ! -f lib/$(LIMPLIB) ] || cp lib/$(LIMPLIB) $(FMM_INSTALL_DIR)/
+	[ ! -f lib/$(LIMPLIB) ] || cp -f lib/$(LIMPLIB) $(FMM_INSTALL_DIR)/
 	@echo "Make sure to include " $(FMM_INSTALL_DIR) " in the appropriate path variable"
 	@echo "    LD_LIBRARY_PATH on Linux"
 	@echo "    PATH on windows"
@@ -224,7 +226,7 @@ $(STATICLIB): $(OBJS)
 	ar rcs $(STATICLIB) $(OBJS)
 	mv $(STATICLIB) lib-static/
 $(DYNAMICLIB): $(OBJS)
-	$(FC) -shared -fPIC $(OBJS) -o $(DYNAMICLIB) $(DYLIBS)
+	$(FC) $(FFLAGS_DYN) $(OBJS) -o $(DYNAMICLIB) $(DYLIBS)
 	mv $(DYNAMICLIB) lib/
 	[ ! -f $(LIMPLIB) ] || mv $(LIMPLIB) lib/
 
@@ -272,7 +274,7 @@ python-dist: $(STATICLIB)
 
 # testing routines
 #
-test: $(STATICLIB) $(TOBJS) test/helmrouts test/hfmm3d test/hfmm3d_vec test/hfmm3d_scale test/laprouts test/lfmm3d test/lfmm3d_vec test_hfmm3d_mps test/lfmm3d_scale test/stfmm3d test/stokkernels test/emfmm3d
+test: $(STATICLIB) $(TOBJS) test/helmrouts test/hfmm3d test/hfmm3d_vec test/hfmm3d_scale test/laprouts test/lfmm3d test/lfmm3d_vec test_hfmm3d_mps test/lfmm3d_scale test/stfmm3d test/stokkernels test/stokkernels_rotlet_doublet test/emfmm3d
 	(cd test/Helmholtz; ./run_helmtest.sh)
 	(cd test/Laplace; ./run_laptest.sh)
 	(cd test/Stokes; ./run_stoktest.sh)
@@ -334,6 +336,9 @@ test/stfmm3d:
 
 test/stokkernels:
 	$(FC) $(FFLAGS) test/Stokes/test_stokkernels.f $(TOBJS) $(COMOBJS) $(LOBJS) $(STOBJS) -o test/Stokes/int2-test-stokkernels $(LIBS)
+
+test/stokkernels_rotlet_doublet:
+	$(FC) $(FFLAGS) test/Stokes/test_stokkernels_rotlet_doublet.f $(TOBJS) $(COMOBJS) $(LOBJS) $(STOBJS) -o test/Stokes/int2-test-stokkernels-rotlet-doublet $(LIBS)
 
 test/emfmm3d:
 	$(FC) $(FFLAGS) test/Maxwell/test_emfmm3d.f $(TOBJS) $(COMOBJS) $(HOBJS) $(EMOBJS) -o test/Maxwell/int2-test-emfmm3d $(LIBS)

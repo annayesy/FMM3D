@@ -1,8 +1,48 @@
+c Information Technology Laboratory, National Institute of 
+c Standards and Technology, 325 Broadway, Mail Stop 891.01, 
+c Boulder, CO 80305-3328. email: zydrunas.gimbutas@nist.gov. 
+c Contributions by staff of NIST, an agency of the U.S. Government, 
+c are not subject to copyright within the United States.
+
+c NIST-developed software is provided by NIST as a public service. 
+c You may use, copy, and distribute copies of the software in any medium, 
+c provided that you keep intact this entire notice. You may improve, 
+c modify, and create derivative works of the software or any portion of 
+c the software, and you may copy and distribute such 
+c modifications or works. Modified works should carry a notice stating 
+c that you changed the software and should note the date and nature 
+c of any such change. Please explicitly acknowledge the National 
+c Institute of Standards and Technology as the source of the software. 
+
+c NIST-developed software is expressly provided "AS IS." 
+c NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT, OR 
+c ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE 
+c IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
+c NON-INFRINGEMENT, AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR 
+c WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED 
+c OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT
+c WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE 
+c SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE 
+c CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
+c
+c You are solely responsible for determining the appropriateness of 
+c using and distributing the software and you assume all risks 
+c associated with its use, including but not limited to the risks 
+c and costs of program errors, compliance with applicable laws, damage 
+c to or loss of data, programs or equipment, and the unavailability 
+c or interruption of operation. This software is not intended to be 
+c used in any situation where a failure could cause risk of injury 
+c or damage to property. The software developed by NIST employees is 
+c not subject to copyright protection within the United States.
+
+
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c
 
       subroutine hnumphys(eps,zk,nl,nphys)
       implicit none
       real *8 eps
-      integer iprec,idomain,nl,nphys(nl),ier
+      integer *8 iprec,idomain,nl,nphys(nl),ier
       complex *16 zk
 
       call hwts3dgetd(ier,zk,idomain)
@@ -29,7 +69,7 @@ c
 c
       subroutine hnumphys_iprec0(idomain,nl,nphys)
       implicit none
-      integer idomain,nl,nphys(nl)
+      integer *8 idomain,nl,nphys(nl)
 
         if(idomain.eq.  1) then
           nphys(  1) =   3
@@ -8233,7 +8273,7 @@ c
 c
       subroutine hnumphys_iprec1(idomain,nl,nphys)
       implicit none
-      integer idomain,nl,nphys(nl)
+      integer *8 idomain,nl,nphys(nl)
 
 
         if(idomain.eq.  1) then
@@ -17430,7 +17470,7 @@ c
 
       subroutine hnumphys_iprec2(idomain,nl,nphys)
       implicit none
-      integer idomain,nl,nphys(nl)
+      integer *8 idomain,nl,nphys(nl)
 
 
         if(idomain.eq.  1) then
@@ -29846,7 +29886,7 @@ c
 
       subroutine hnumphys_iprec3(idomain,nl,nphys)
       implicit none
-      integer idomain,nl,nphys(nl)
+      integer *8 idomain,nl,nphys(nl)
 
 
         if(idomain.eq.  1) then
@@ -46095,7 +46135,7 @@ c
 
       subroutine hnumphys_iprec4(idomain,nl,nphys)
       implicit none
-      integer idomain,nl,nphys(nl)
+      integer *8 idomain,nl,nphys(nl)
 
 
         if(idomain.eq.  1) then

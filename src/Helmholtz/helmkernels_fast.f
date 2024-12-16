@@ -37,7 +37,7 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x) = pot(x) + sum  1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|
 c                        j
 c                 
 c      where q_{j} is the charge strength
@@ -75,7 +75,7 @@ cf2py intent(out) pot
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt)
@@ -100,10 +100,10 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x) = pot(x) + sum  1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|
 c                        j
 c                 
-c     grad(x) = grad(x) + Gradient(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     grad(x) = grad(x) + Gradient(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|)
 c                                   j
 c      where q_{j} is the charge strength
 c      If |r| < thresh 
@@ -141,7 +141,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt),grad(nd,3,nt)
@@ -167,12 +167,12 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| 
+c     pot(x) = pot(x) + sum  1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|
 c                        j
 c                 
-c     grad(x)=grad(x)+Gradient(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     grad(x)=grad(x)+Gradient(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|)
 c                               j
-c     hess(x)=hess(x)+Hessian(sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|) 
+c     hess(x)=hess(x)+Hessian(sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}|)
 c                              j
 c      where q_{j} is the charge strength
 c      If |r| < thresh 
@@ -212,7 +212,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),pot(nd,nt),grad(nd,3,nt)
@@ -240,7 +240,7 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x) = pot(x) + sum   \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j} 
+c     pot(x) = pot(x) + sum  1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                        j
 c
 c                            
@@ -282,7 +282,7 @@ cf2py intent(out) pot
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -309,15 +309,15 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c     pot(x) = pot(x) + sum  1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                        j
 c
 c                            
 c   
-c     grad(x) = grad(x) + Gradient( sum  
+c     grad(x) = grad(x) + Gradient( sum
 c                                    j
 c
-c                            \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                           1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                            )
 c                                   
 c      where v_{j} is the dipole orientation vector, 
@@ -359,7 +359,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -389,13 +389,13 @@ c
 c     grad(x)=grad(x)+Gradient( sum  
 c                                j
 c
-c                        \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                        1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                        )
 c                                   
 c     hess(x)=hess(x)+Hessian( sum  
 c                               j
 c
-c                       \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                       1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                       )
 c                                   
 c      where v_{j} is the dipole orientation vector, 
@@ -439,7 +439,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -465,10 +465,10 @@ c     This subroutine evaluates the potential due to a collection
 c     of sources and adds to existing
 c     quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +
 c                        j
 c
-c                            \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                           1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
 c      where q_{j} is the charge strength, 
 c      and v_{j} is the dipole orientation vector, 
@@ -509,7 +509,7 @@ c
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -536,15 +536,15 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum  1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +
 c                        j
 c
-c                            \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                            1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
-c     grad(x) = grad(x) + Gradient( sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     grad(x) = grad(x) + Gradient( sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +
 c                                    j
 c
-c                            d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                           1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                            )
 c                                   
 c      where q_{j} is the charge strength
@@ -587,7 +587,7 @@ cf2py intent(out) pot,grad
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 dipvec(nd,3,ns)
@@ -612,21 +612,21 @@ c
 c     This subroutine evaluates the potential and gradient due to a 
 c     collection of sources and adds to existing quantities.
 c
-c     pot(x) = pot(x) + sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     pot(x) = pot(x) + sum  1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +
 c                        j
 c
-c                         \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                        1/(4\pi) \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c   
-c     grad(x)=grad(x)+Gradient( sumq_{j} e^{i k |x-x_{j}|}/|x-x_{j}|+  
+c     grad(x)=grad(x)+Gradient( sumq_{j} 1/(4\pi) e^{i k |x-x_{j}|}/|x-x_{j}|+
 c                                j
 c
-c                   d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                   1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                   )
 c                                   
-c     hess(x)=hess(x)+Hessian( sum  q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +  
+c     hess(x)=hess(x)+Hessian( sum 1/(4\pi) q_{j} e^{i k |x-x_{j}|}/|x-x_{j}| +
 c                               j
 c
-c                   d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
+c                   1/(4\pi) d_{j} \nabla e^{ik |x-x_{j}|/|x-x_{j}| \cdot v_{j}
 c                   )
 c                                   
 c      where q_{j} is the charge strength
@@ -671,7 +671,7 @@ cf2py intent(out) pot,grad,hess
 c
 cc      calling sequence variables
 c  
-      integer ns,nt,nd
+      integer *8 ns,nt,nd
       complex *16 zk
       real *8 sources(3,ns),ztarg(3,nt)
       complex *16 charge(nd,ns),dipvec(nd,3,ns)

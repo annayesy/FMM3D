@@ -3,8 +3,8 @@ c
 c  The Helmholtz FMM evaluates the following potential
 c  and its gradient
 c    
-c     u(x) = \sum_{j=1}^{N} c_{j}e^{ik|x-x_{j}|}/|x-x_{j}| 
-c               - v_{j}.\nabla (e^{ik|x-x_{j}|}/|x-x_{j}|)
+c     u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j}e^{ik|x-x_{j}|}/|x-x_{j}| 
+c               - 1/(4\pi) v_{j}.\nabla (e^{ik|x-x_{j}|}/|x-x_{j}|)
 c
 c  Here x_{j} are the source locations, c_{j} are the charge strengths,
 c  v_{j} are the dipole strengths. We refer to the collection of 
@@ -133,7 +133,7 @@ cf2py  intent(out) pot,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the source locations $x=x_{j}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -145,7 +145,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -157,7 +157,7 @@ c  Output arguments:
 c
 c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -169,8 +169,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(nsource)
@@ -215,7 +215,7 @@ cf2py  intent(out) pot,grad,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the source locations $x=x_{j}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -227,7 +227,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -241,7 +241,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double complex(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -254,8 +254,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(nsource)
@@ -298,7 +298,7 @@ cf2py  intent(out) pot,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -311,7 +311,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -323,7 +323,7 @@ c  Output arguments:
 c
 c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -336,8 +336,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(1)
@@ -381,7 +381,7 @@ cf2py  intent(out) pot,grad,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -394,7 +394,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -408,7 +408,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double complex(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -421,8 +421,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(1)
@@ -465,8 +465,8 @@ cf2py  intent(out) pot,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -479,7 +479,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -493,7 +493,7 @@ c  Output arguments:
 c
 c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -506,8 +506,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(nsource)
@@ -555,8 +555,8 @@ cf2py  intent(out) pot,grad,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source locations $x=x_{j}$.
@@ -569,7 +569,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -585,7 +585,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    grad: double complex(3,nsource)
 c          Gradient at source locations, $\nabla u(x_{j})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -598,8 +598,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,1)
       double complex charge(nsource)
@@ -643,7 +643,7 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the target locations $x=t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -655,13 +655,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -671,7 +671,7 @@ c  Output arguments:
 c
 c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -684,8 +684,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -729,7 +729,7 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the target locations $x=t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -741,13 +741,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -759,7 +759,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -772,8 +772,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -814,7 +814,7 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -827,13 +827,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -843,7 +843,7 @@ c  Output arguments:
 c
 c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -856,8 +856,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(1)
@@ -901,7 +901,7 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -914,13 +914,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -932,7 +932,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -945,8 +945,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(1)
@@ -988,8 +988,8 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1002,7 +1002,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1010,7 +1010,7 @@ c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1020,7 +1020,7 @@ c  Output arguments:
 c
 c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1033,8 +1033,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -1078,8 +1078,8 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the target locations $x=t_{i}$.
@@ -1092,7 +1092,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1100,7 +1100,7 @@ c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1112,7 +1112,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1125,8 +1125,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -1168,7 +1168,7 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1180,13 +1180,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1198,7 +1198,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 cc    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1211,8 +1211,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -1256,7 +1256,7 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|}
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
 c  When $x=x_{j}$, the term corresponding to $x_{j}$ is 
@@ -1268,13 +1268,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1290,7 +1290,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1303,8 +1303,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -1347,7 +1347,7 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -1360,13 +1360,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1378,7 +1378,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1391,8 +1391,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(1)
@@ -1437,7 +1437,7 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = -\sum_{j=1}^{N} v_{j} \cdot \nabla \left( 
+c      u(x) = -\sum_{j=1}^{N} 1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -1450,13 +1450,13 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1472,7 +1472,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1485,8 +1485,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(1)
@@ -1528,8 +1528,8 @@ cf2py  intent(out) pottarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -1542,7 +1542,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1550,7 +1550,7 @@ c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1562,7 +1562,7 @@ c    -    pot: double complex(nsource)
 c          Potential at source locations, $u(x_{j})$
 c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1575,8 +1575,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
@@ -1620,8 +1620,8 @@ cf2py  intent(out) pottarg,gradtarg,ier
 c-------------------------------------
 c
 c  This subroutine evaluates the potential and its gradient 
-c      u(x) = \sum_{j=1}^{N} c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
-c            v_{j} \cdot \nabla \left( 
+c      u(x) = \sum_{j=1}^{N} 1/(4\pi) c_{j} \frac{e^{ik\|x- x_{j}\|}}{\|x-x_{j}\|} - 
+c            1/(4\pi) v_{j} \cdot \nabla \left( 
 c            \frac{e^{ik\|x-x_{j}\|}}{\|x-x_{j}\|}\right)
 c
 c  at the source and target locations $x=x_{j},t_{i}$.
@@ -1634,7 +1634,7 @@ c    -    eps: double precision
 c          precision requested
 c    -    zk: double complex
 c          Helmholtz parameter (k)
-c    -    nsource: integer
+c    -    nsource: integer *8
 c          Number of sources
 c    -    source: double precision(3,nsource)
 c          Source locations, $x_{j}$
@@ -1642,7 +1642,7 @@ c    -    charge: double complex(nsource)
 c          Charge strengths, $c_{j}$
 c    -    dipvec: double complex(3,nsource)
 c          Dipole strengths, $v_{j}$
-c    -    ntarg: integer
+c    -    ntarg: integer *8
 c          Number of targets
 c    -    targ: double precision(3,ntarg)
 c          Target locations, $t_{i}$
@@ -1658,7 +1658,7 @@ c    -    pottarg: double complex(ntarg)
 c          Potential at target locations, $u(t_{i})$
 c    -    gradtarg: double complex(3,ntarg)
 c          Gradient at target locations, $\nabla u(t_{i})$
-c    -    ier: integer
+c    -    ier: integer *8
 c          error flag
 c           * ier = 0, for normal execution
 c           * ier = 4/8, failed to allocate memory in fmm routine
@@ -1671,8 +1671,8 @@ c
       double precision eps
       double complex zk
 
-      integer nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
-      integer nd,ier,iper
+      integer *8 nsource,ntarg,ifcharge,ifdipole,ifpgh,ifpghtarg
+      integer *8 nd,ier,iper
       
       double precision source(3,nsource),targ(3,ntarg)
       double complex charge(nsource)
